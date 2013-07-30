@@ -1,28 +1,22 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is mainly an HTTP JSON API that allows the user to retrieve earthquake records from the earthquake data stored in the PostgreSQL/PostGIS database.  The data have to be retrieved from the USGS and stored to the local database first.
 
-Things you may want to cover:
+* The version of Ruby and the version of Rails that were developed against are ruby 1.9.3-p194 and rails 4.0.0.
 
-* Ruby version
+* The database that was developed against is PostgreSQL v.9.2.4 with PostGIS v.2.0.3, specifically: POSTGIS="2.0.3 r11128" GEOS="3.3.8-CAPI-1.7.8" PROJ="Rel. 4.8.0, 6 March 2012" LIBXML="2.9.1" LIBJSON="UNKNOWN"
 
-* System dependencies
+* Please take a look at config/database.yml to set up the necessary users in the database.  Once it is done, you may set up the database by doing
+ - rake db:create
+ - rake db:migrate
 
-* Configuration
+* There is a rake task that can be run periodically to get data from the USGS and store the data to the local database.
+ - rake usgs:earthquakes:ingest
+ - Repeated running of the rake task will populate the database with new and latest data.
 
-* Database creation
+* Once everything has been set up and the database has the data from the USGS, you may try the application by doing <tt>bundle exec rails s</tt> and going to <tt>http://localhost:3000</tt> in your browser to get the usage information.
 
-* Database initialization
+* You may also view and query the data by going to <tt>http://localhost:3000/earthquakes</tt> in your browser.
 
-* How to run the test suite
+* Automated tests are in the <tt>spec</tt> directory.
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
