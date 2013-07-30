@@ -7,12 +7,12 @@ This is mainly an HTTP JSON API that allows the user to retrieve earthquake reco
 * The database that was developed against is PostgreSQL v.9.2.4 with PostGIS v.2.0.3, specifically: POSTGIS="2.0.3 r11128" GEOS="3.3.8-CAPI-1.7.8" PROJ="Rel. 4.8.0, 6 March 2012" LIBXML="2.9.1" LIBJSON="UNKNOWN"
 
 * Please take a look at config/database.yml to set up the necessary users in the database.  Once it is done, you may set up the database by doing
- - rake db:create
- - rake db:migrate
+  - rake db:create
+  - rake db:migrate
 
 * There is a rake task that can be run periodically to get data from the USGS and store the data to the local database.
- - rake usgs:earthquakes:ingest
- - Repeated running of the rake task will populate the database with new and latest data.
+  - rake usgs:earthquakes:ingest
+  - Repeated running of the rake task will populate the database with new and latest data.
 
 * Once everything has been set up and the database has the data from the USGS, you may try the application by doing <tt>bundle exec rails s</tt> and going to <tt>http://localhost:3000</tt> in your browser to get the usage information.
 
