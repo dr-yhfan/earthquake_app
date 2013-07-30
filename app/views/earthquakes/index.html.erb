@@ -1,0 +1,44 @@
+<h1>Welcome!</h1>
+
+Here are some of the things you can do by modifying the URL.
+<br/>
+
+<dl>
+  <dt><b>http://[hostname]/earthquakes.json</b></dt>
+    <dd>Returns all earthquakes</dd>
+
+  <dt><b>http://[hostname]/earthquakes.json?on=1364582194</b></dt>
+    <dd>Returns earthquakes on the same day (UTC) as the unix timestamp 1364582194</dd>
+
+  <dt><b>http://[hostname]/earthquakes.json?since=1364582194</b></dt>
+    <dd>Returns earthquakes since the unix timestamp 1364582194</dd>
+
+  <dt><b>http://[hostname]/earthquakes.json?over=3.2</b></dt>
+    <dd>Returns earthquakes > 3.2 magnitude</dd>
+
+  <dt><b>http://[hostname]/earthquakes.json?near=36.6702,-114.8870</b></dt>
+    <dd>Returns all earthquakes within 5 miles of lat: 36.6702, lng: -114.8870</dd>
+</dl>
+
+<br/><br/>
+
+<u>NOTES</u>:
+
+<br/><br/>
+
+The endpoint should be able to take any combination of GET params, and
+filter the results properly. If on and since are both present, it should
+return results since the timestamp until the end of that day.
+
+<br/><br/>
+
+EXAMPLES:
+
+<dl>
+  <dt><b>http://[hostname]/earthquakes.json?over=3.2&near=36.6702,-114.8870&since=1364582194</b></dt>
+    <dd>Returns all earthquakes over 3.2 magnitude within 5 miles of 36.6702,-114.8870 since 2013-03-29 18:36:34 UTC</dd>
+
+  <dt><b>http://[hostname]/earthquakes.json?over=3.2&on=1364582194&since=1364582194</b></dt>
+    <dd>Returns all earthquakes over 3.2 magnitude between 2013-03-29 18:36:34 UTC and 2013-03-29 23:59:59 UTC</dd>
+</dl>
+

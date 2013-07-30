@@ -1,0 +1,93 @@
+<% content_for :head do %>
+  <style>
+    #display_area {
+      width: 1024px;
+      height: 1280px;
+    }
+    #map_canvas {
+      width: 640px;
+      height: 480px;
+      float: left;
+    }
+    #control_panel {
+      width: 364px;
+      margin-left:20px;
+      float: left;
+    }
+  </style>
+  <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  <script>
+    function initialize()
+    {
+      var map_canvas = document.getElementById('map_canvas');
+      <% if params[:near].present? %>
+        latLon = <%= params[:near].split(',').map {|v| v.to_f} %>;
+      <% else %>
+        latLon = [33.98,-117.15];
+      <% end %>
+      var map_options = {
+        center: new google.maps.LatLng(latLon[0], latLon[1]),
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+      }
+      var map = new google.maps.Map(map_canvas, map_options);
+
+      function placeMarkers(results)
+      {
+        for (var n = 0; n < results.length; ++n)
+        {
+          var earthquake = results[n];
+          var coordinates = earthquake.location.split('POINT ')[1].split('(')[1].split(')')[0].split(' ');
+          var latLon = new google.maps.LatLng(parseFloat(coordinates[1]), parseFloat(coordinates[0]));
+          var marker = new google.maps.Marker({
+            position: latLon,
+            map: map,
+            icon: getCircle(earthquake.magnitude)
+          });
+        }
+      }
+
+      function getCircle(magnitude)
+      {
+        return {
+          path: google.maps.SymbolPath.CIRCLE,
+          fillColor: 'red',
+          fillOpacity: .5,
+          scale: Math.pow(2, magnitude) / 3,
+          strokeColor: 'white',
+          strokeWeight: 1
+        };
+      }
+
+      var records = eval("(" + '<%= @records.to_json.to_s.gsub('\'') {|s| %q{\'} }.html_safe %>' + ")");
+      placeMarkers(records);
+    }
+    
+    google.maps.event.addDomListener(window, 'load', initialize);
+  </script>
+<% end %>
+
+<h1>View Earthquakes on a Map</h1>
+
+<div id='display_area'>
+  <div id='map_canvas'></div>
+  <div id='control_panel'>
+    <%= form_tag(get_earthquakes_path, method: 'get', multipart: true) do %>
+      <span>
+        Since epoch time:<br/>
+        <%= text_field_tag 'since', (params[:since].present? ? params[:since] : nil), placeholder: 'e.g., 1374886800', size: 32 %><br/>
+        <br/>
+        On (or until) the day of epoch time:<br/>
+        <%= text_field_tag 'on', (params[:on].present? ? params[:on] : nil), placeholder: 'e.g., 1374886800', size: 32 %><br/>
+        <br/>
+        Magnitude over:<br/>
+        <%= text_field_tag 'over', (params[:over].present? ? params[:over] : nil), placeholder: 'e.g., 3.5', size: 32 %><br/>
+        <br/>
+        Within 5-mile radius of:<br/>
+        <%= text_field_tag 'near', (params[:near].present? ? params[:near] : nil), placeholder: 'e.g., 33.98,-117.15 (no space is allowed)', size: 32 %><br/>
+        <br/><br/>
+        <%= submit_tag 'Go' %>
+      </span>
+    <% end %>
+  </div>
+</div>
